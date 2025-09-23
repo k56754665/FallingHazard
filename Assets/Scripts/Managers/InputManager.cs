@@ -9,6 +9,7 @@ public class InputManager : Singleton<InputManager>
     public event Action<Vector2> OnStartPressEvent;
     public event Action OnCancelPressEvent;
     public event Action<Vector2> OnPositionEvent;
+    public Vector2 MoveVector { get; private set; }
 
     protected override void Awake()
     {
@@ -48,5 +49,10 @@ public class InputManager : Singleton<InputManager>
     {
         Vector2 screenPos = ctx.ReadValue<Vector2>();
         OnPositionEvent?.Invoke(screenPos);
+    }
+    
+    public void SetMoveVector(Vector2 moveVector)
+    {
+        MoveVector = moveVector;
     }
 }

@@ -13,9 +13,9 @@ public class Joystick : MonoBehaviour
     private UISpace _uiSpace = new();
     private InputManager _inputManager;
 
-    public Vector2 Direction { get; private set; }
-    public float Magnitude { get; private set; }
-    public bool IsTouching { get; private set; }
+    private Vector2 _direction;
+    private float _magnitude;
+    private bool _isTouching;
 
     private void Awake()
     {
@@ -54,25 +54,27 @@ public class Joystick : MonoBehaviour
         joystickBase.rectTransform.anchoredPosition = localPoint;
         _startPosition = localPoint;
         joystickBase.gameObject.SetActive(true);
-        IsTouching = true;
+        _isTouching = true;
         
-        GameManager.Instance.SetDive(true);
+        SpeedSystem.SetDive(false);
     }
 
     private void HandlePosition(Vector2 screenPos)
     {
-        if (!IsTouching) return;
+        if (!_isTouching) return;
 
         Vector2 localPoint = ScreenToLocal(screenPos, _uiSpace);
 
         Vector2 localDelta = localPoint - _startPosition;
         float magnitude = localDelta.magnitude;
 
-        Direction = localDelta.normalized;
-        Magnitude = Mathf.Min(magnitude / _joystickRadius, 1f);
+        _direction = localDelta.normalized;
+        _magnitude = Mathf.Min(magnitude / _joystickRadius, 1f);
 
         if (magnitude > _joystickRadius)
-            localDelta = Direction * _joystickRadius;
+            localDelta = _direction * _joystickRadius;
+        
+        _inputManager.SetMoveVector(localDelta);
 
         joystickHandle.rectTransform.localPosition = localDelta;
     }
@@ -81,9 +83,10 @@ public class Joystick : MonoBehaviour
     {
         joystickBase.gameObject.SetActive(false);
         joystickHandle.rectTransform.localPosition = Vector2.zero;
-        Direction = Vector2.zero;
-        Magnitude = 0f;
-        IsTouching = false;
-        GameManager.Instance.SetDive(false);
+        _direction = Vector2.zero;
+        _inputManager.SetMoveVector(_direction);
+        _magnitude = 0f;
+        _isTouching = false;
+        SpeedSystem.SetDive(true);
     }
 }
