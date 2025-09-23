@@ -4,9 +4,9 @@ using Unity.Cinemachine;
 [ExecuteAlways]
 public class SpeedBasedCameraExtension : CinemachineExtension
 {
-    [Header("Y Offset 설정")]
-    [SerializeField] private float bottomYOffset = -5f;   // 최고 속도일 때 카메라 위치
-    [SerializeField] private AnimationCurve offsetCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    // [Header("Y Offset 설정")]
+    // [SerializeField] private float bottomYOffset = -5f;   // 최고 속도일 때 카메라 위치
+    // [SerializeField] private AnimationCurve offsetCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
     [Header("카메라 쉐이킹 설정")]
     [SerializeField] private float shakeIntensity = 0.5f; // 최대 흔들림 강도
