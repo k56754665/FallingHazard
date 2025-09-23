@@ -11,6 +11,7 @@ public class Joystick : MonoBehaviour
     private Vector2 _startPosition;
     private Vector2 _currentPosition;
     private UISpace _uiSpace = new();
+    private InputManager _inputManager;
 
     public Vector2 Direction { get; private set; }
     public float Magnitude { get; private set; }
@@ -26,17 +27,18 @@ public class Joystick : MonoBehaviour
 
     private void Start()
     {
-        InputManager.Instance.OnStartPressEvent += HandlePress;
-        InputManager.Instance.OnCancelPressEvent += ResetJoystick;
-        InputManager.Instance.OnPositionEvent += HandlePosition;
+        _inputManager = InputManager.Instance;
+        _inputManager.OnStartPressEvent += HandlePress;
+        _inputManager.OnCancelPressEvent += ResetJoystick;
+        _inputManager.OnPositionEvent += HandlePosition;
     }
 
     private void OnDestroy()
     {
-        if (InputManager.Instance == null) return;
-        InputManager.Instance.OnStartPressEvent -= HandlePress;
-        InputManager.Instance.OnCancelPressEvent -= ResetJoystick;
-        InputManager.Instance.OnPositionEvent -= HandlePosition;
+        if (_inputManager == null) return;
+        _inputManager.OnStartPressEvent -= HandlePress;
+        _inputManager.OnCancelPressEvent -= ResetJoystick;
+        _inputManager.OnPositionEvent -= HandlePosition;
     }
 
     private void HandlePress(Vector2 screenPos)
@@ -53,6 +55,8 @@ public class Joystick : MonoBehaviour
         _startPosition = localPoint;
         joystickBase.gameObject.SetActive(true);
         IsTouching = true;
+        
+        GameManager.Instance.SetDive(true);
     }
 
     private void HandlePosition(Vector2 screenPos)
@@ -80,5 +84,6 @@ public class Joystick : MonoBehaviour
         Direction = Vector2.zero;
         Magnitude = 0f;
         IsTouching = false;
+        GameManager.Instance.SetDive(false);
     }
 }
