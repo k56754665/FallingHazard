@@ -8,6 +8,7 @@ public class DiveState : PlayerState
     {
         Debug.Log("Enter DiveState");
         _player.PlayerAnimation.PlayDive();
+        _player.PlayerHitBox.EnableDiveCollider(true);
     }
 
     public override void FixedUpdate()
@@ -22,6 +23,6 @@ public class DiveState : PlayerState
 
     public override void Exit()
     {
-        
+        _player.PlayerHitBox.EnableDiveCollider(false);
     }
 }

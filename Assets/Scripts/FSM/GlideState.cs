@@ -8,6 +8,7 @@ public class GlideState : PlayerState
     {
         Debug.Log("Enter GlideState");
         _player.PlayerAnimation.PlayGlide();
+        _player.PlayerHitBox.EnableGlideCollider(true);
     }
 
     public override void FixedUpdate()
@@ -22,6 +23,6 @@ public class GlideState : PlayerState
 
     public override void Exit()
     {
-        
+        _player.PlayerHitBox.EnableGlideCollider(false);
     }
 }

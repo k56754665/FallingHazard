@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -6,6 +5,7 @@ public class PlayerController : MonoBehaviour
     public PlayerStateFactory PlayerStateFactory { get; private set; }
     public PlayerMovement PlayerMovement { get; private set; }
     public PlayerAnimation PlayerAnimation { get; private set; }
+    public PlayerHitBox PlayerHitBox { get; private set; }
 
     private InputManager _inputManager;
     private PlayerState _currentState;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
         PlayerStateFactory = new PlayerStateFactory(this);
         PlayerMovement = GetComponent<PlayerMovement>();
         PlayerAnimation = GetComponent<PlayerAnimation>();
+        PlayerHitBox = GetComponent<PlayerHitBox>();
     }
 
     private void Start()
