@@ -5,7 +5,7 @@ public class PlayerAnimation : MonoBehaviour
     private static readonly int IsTouching = Animator.StringToHash("IsTouching");
     private Animator _animator;
 
-    void Awake()
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
     }

@@ -35,8 +35,6 @@ public class PlayerMovement : MonoBehaviour
         Vector2 input = GetInput();
 
         float targetXVel = input.x * moveSpeed;
-
-        // 항상 climbSpeed 이상 유지 (아래 입력해도 덜 올라가는 것까지만 허용)
         float targetYVel = Mathf.Max(climbSpeed + input.y * climbBoost, climbSpeed);
 
         _rb.linearVelocity = new Vector2(targetXVel, targetYVel);
@@ -49,14 +47,11 @@ public class PlayerMovement : MonoBehaviour
     public void MoveDive()
     {
         Vector2 input = GetInput();
-
-        // 아래로 힘 추가
+        
         _rb.AddForce(Vector2.down * fallAccel, ForceMode2D.Force);
-
-        // 현재 속도 가져오기
+        
         var vel = _rb.linearVelocity;
-
-        // 최대 낙하 속도 제한
+        
         if (vel.y < -maxFallSpeed) vel.y = -maxFallSpeed;
 
         float targetXVel = input.x * moveSpeed;

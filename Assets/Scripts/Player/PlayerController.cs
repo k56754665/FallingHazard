@@ -2,19 +2,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerStateFactory PlayerStateFactory { get; private set; }
+    public StateFactory<PlayerController> PlayerStateFactory { get; private set; }
     public PlayerMovement PlayerMovement { get; private set; }
     public PlayerAnimation PlayerAnimation { get; private set; }
     public PlayerHitBox PlayerHitBox { get; private set; }
+    public bool IsTouching { get; private set; }
 
     private InputManager _inputManager;
-    private PlayerState _currentState;
-
+    private State<PlayerController> _currentState;
+    private int _hp = 5;
     
     private void Awake()
     {
         _inputManager = InputManager.Instance;
-        PlayerStateFactory = new PlayerStateFactory(this);
+        PlayerStateFactory = new StateFactory<PlayerController>(this);
         PlayerMovement = GetComponent<PlayerMovement>();
         PlayerAnimation = GetComponent<PlayerAnimation>();
         PlayerHitBox = GetComponent<PlayerHitBox>();
@@ -35,11 +36,34 @@ public class PlayerController : MonoBehaviour
         _currentState.FixedUpdate();
     }
 
-    public void ChangeState(PlayerState newState)
+    public void ChangeState(State<PlayerController> newState)
     {
         _currentState?.Exit();
         _currentState = newState;
         _currentState?.Enter();
+    }
+    
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        Debug.Log($"{other.gameObject.name}");
+        EnemyBase enemy = other.gameObject.GetComponent<EnemyBase>();
+        if (enemy != null)
+        {
+            TakeDamage(enemy.Damage);
+        }
+    }
+
+    private void TakeDamage(int damage)
+    {
+        _hp -= Mathf.Max(damage, 0);
+        
+        if (_hp <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 
     private void OnEnable()
@@ -57,11 +81,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePressStart(Vector2 input)
     {
-        ChangeState(PlayerStateFactory.Get<GlideState>());
+        IsTouching = true;
     }
 
     private void HandlePressCancel()
     {
-        ChangeState(PlayerStateFactory.Get<DiveState>());
+        IsTouching = false;
     }
 }
