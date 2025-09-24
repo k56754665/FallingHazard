@@ -10,15 +10,6 @@ public abstract class EnemyBase : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    protected virtual void Update()
-    {
-        // 화면 위로 나가면 삭제
-        if (transform.position.y > 8f)
-        {
-            Destroy(gameObject);
-        }
-    }
     
     public void TakeDamage(int dmg)
     {
@@ -31,7 +22,6 @@ public abstract class EnemyBase : MonoBehaviour
     
     private void Die()
     {
-        Debug.Log($"{name} 사망!");
         Destroy(gameObject);
     }
 }

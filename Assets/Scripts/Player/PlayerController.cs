@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log($"{other.gameObject.name}");
         EnemyBase enemy = other.gameObject.GetComponent<EnemyBase>();
         if (enemy != null)
         {
