@@ -23,6 +23,6 @@ public class RisingEnemy : EnemyBase
     
     private void FixedUpdate()
     {
-        rb.linearVelocity = Vector2.up * (speed * SpeedSystem.Speed);
+        rb.linearVelocity = Vector2.up * (speed + SpeedSystem.Speed);
     }
 }

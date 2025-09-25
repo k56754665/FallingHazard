@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class FallingEnemy : EnemyBase
 {
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private int damage = 1;
+    [SerializeField] private float speed;
+    [SerializeField] private int damage;
+    [SerializeField] private int minSpeed;
 
     protected override void Start()
     {
@@ -22,6 +23,6 @@ public class FallingEnemy : EnemyBase
     
     private void FixedUpdate()
     {
-        rb.linearVelocity = Vector2.down * (speed * SpeedSystem.Speed);
+        rb.linearVelocity = Vector2.down * Mathf.Max((speed - SpeedSystem.Speed), minSpeed);
     }
 }
